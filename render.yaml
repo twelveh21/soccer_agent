@@ -8,8 +8,8 @@ services:
     # 面试演示版使用 Render 免费 Web 服务；闲置后会自动休眠。
     plan: free
     buildCommand: pip install --no-cache-dir -r agent_base/requirements.txt
-    preDeployCommand: alembic upgrade head
-    startCommand: uvicorn service.app:app --host 0.0.0.0 --port $PORT
+    # 免费档不支持 preDeployCommand；启动时先把表结构升级，再启动 FastAPI。
+    startCommand: alembic upgrade head && uvicorn service.app:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: PYTHONPATH
