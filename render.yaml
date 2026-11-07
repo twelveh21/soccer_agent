@@ -1,0 +1,95 @@
+# Render Blueprint：部署网页 API、Celery 后台 Worker、PostgreSQL 与 Redis。
+# 真实密钥使用 sync: false，必须在 Render 控制台填写，绝不提交到 Git。
+services:
+  - type: web
+    name: soccer-agent-web
+    runtime: python
+    region: singapore
+    plan: starter
+    buildCommand: pip install --no-cache-dir -r agent_base/requirements.txt
+    preDeployCommand: alembic upgrade head
+    startCommand: uvicorn service.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: DATABASE_URL
+        fromDatabase:
+          name: soccer-agent-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: DASHSCOPE_BASE_URL
+        value: https://dashscope.aliyuncs.com/compatible-mode/v1
+      - key: SOCCER_AGENT_MODEL
+        value: qwen3.5-35b-a3b
+      - key: SOCCER_AGENT_LIGHT_MODEL
+        value: qwen3.5-plus
+      - key: SOCCER_AGENT_VISION_MODEL
+        value: qwen-vl-plus
+      - key: FOOTBALL_DATA_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SOCCER_AGENT_BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+
+  - type: worker
+    name: soccer-agent-worker
+    runtime: python
+    region: singapore
+    plan: starter
+    buildCommand: pip install --no-cache-dir -r agent_base/requirements.txt
+    startCommand: celery -A worker.celery_app:celery_app worker --loglevel=INFO --pool=solo
+    envVars:
+      - key: PYTHONPATH
+        value: /opt/render/project/src
+      - key: DATABASE_URL
+        fromDatabase:
+          name: soccer-agent-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+      - key: CELERY_BROKER_URL
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+      - key: CELERY_RESULT_BACKEND
+        fromService:
+          type: keyvalue
+          name: soccer-agent-cache
+          property: connectionString
+
+  - type: keyvalue
+    name: soccer-agent-cache
+    region: singapore
+    plan: starter
+    maxmemoryPolicy: noeviction
+
+databases:
+  - name: soccer-agent-db
+    region: singapore
+    plan: starter
+    databaseName: soccer_agent
+    user: soccer_agent

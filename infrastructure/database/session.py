@@ -15,12 +15,22 @@ class DatabaseNotConfiguredError(RuntimeError):
 
 
 def database_url() -> str:
-    """从环境变量读取数据库地址，密钥不写入代码或日志。"""
+    """从环境变量读取 SQLAlchemy 可用的数据库地址，密钥不写入代码或日志。
+
+    返回值：可交给 ``create_engine`` 的连接串。
+    实现逻辑：本地 Compose 已使用 ``postgresql+psycopg://``；Render 托管
+    PostgreSQL 则提供标准 ``postgresql://``。这里统一补上 psycopg 驱动名，
+    让同一份业务代码可同时运行在本地与云端。
+    """
     value = os.getenv("DATABASE_URL", "").strip()
     if not value:
         raise DatabaseNotConfiguredError(
             "未配置 DATABASE_URL。当前网页仍可使用 SQLite；启用后端数据库后再填写 PostgreSQL 地址。"
         )
+    if value.startswith("postgres://"):
+        return "postgresql+psycopg://" + value.removeprefix("postgres://")
+    if value.startswith("postgresql://"):
+        return "postgresql+psycopg://" + value.removeprefix("postgresql://")
     return value
 
 
