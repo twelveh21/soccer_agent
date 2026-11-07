@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fifa-training-centre-core-principles",
+    "publisher": "FIFA Training Centre",
+    "title": "Core principles of play",
+    "url": "https://www.fifatrainingcentre.com/en/game/game-analysis/landing-page-core-principles.php",
+    "topics": ["高位压迫", "反抢", "转换", "转移", "组织进攻"],
+    "use": "稳定战术原则与教练教学材料"
+  },
+  {
+    "id": "fifa-training-centre-game-insights",
+    "publisher": "FIFA Training Centre",
+    "title": "Game Insights with Arsene Wenger",
+    "url": "https://www.fifatrainingcentre.com/en/game/game-insights/landing-page.php",
+    "topics": ["后场出球", "宽度", "反击", "压迫"],
+    "use": "技术研究组的比赛趋势与战术案例"
+  },
+  {
+    "id": "coaches-voice-high-press",
+    "publisher": "The Coaches Voice",
+    "title": "In Focus High Press",
+    "url": "https://learning.coachesvoice.com/cv/in-focus-high-press/",
+    "topics": ["高位压迫", "压迫触发", "压迫陷阱", "防守恢复"],
+    "use": "公开教练教学内容，用于补充概念解释"
+  }
+]

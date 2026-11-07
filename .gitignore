@@ -1,0 +1,24 @@
+# Secrets and local runtime data
+.env
+.env.*
+!.env.example
+data/
+artifacts/
+
+# Python and IDE
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.idea/
+web_ui/
+
+# User uploads and document QA output
+*.db
+*.db-shm
+*.db-wal
+knowledge_base/indexes/*.json
+
+# OS files
+.DS_Store
+Thumbs.db

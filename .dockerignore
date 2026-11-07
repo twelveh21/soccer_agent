@@ -1,0 +1,9 @@
+.env
+.git
+.venv
+.idea
+__pycache__
+*.pyc
+data/
+artifacts
+knowledge_base/indexes/

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#db1620" />
+    <title>Soccer Assistant</title>
+    <style>
+      :root{--red:#db1620;--red-deep:#a50f19;--ink:#091b35;--soft:#f5f5f2;--line:#e0e4e7;--muted:#718092;--green:#18a66d}*{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:Inter,"Microsoft YaHei","PingFang SC",system-ui,sans-serif}.app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}.sidebar{position:sticky;top:0;height:100vh;padding:26px 17px;background:var(--ink);color:#fff;overflow:hidden}.sidebar:after{content:"";position:absolute;width:390px;height:390px;right:-270px;bottom:-130px;border:1px solid rgba(255,255,255,.14);border-radius:50%;box-shadow:0 0 0 54px rgba(255,255,255,.03),0 0 0 108px rgba(255,255,255,.02)}.brand{position:relative;z-index:1;display:flex;align-items:center;gap:11px;margin:4px 8px 33px}.mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:var(--red);font-weight:900;font-size:19px;box-shadow:3px 3px 0 #f1c15b}.brand strong{display:block;font-size:15px;letter-spacing:.01em}.brand span{display:block;color:#a9b4c1;font-size:10px;letter-spacing:.14em;margin-top:4px}.new-chat{position:relative;z-index:1;width:100%;border:1px solid rgba(255,255,255,.22);border-radius:9px;padding:11px;background:rgba(255,255,255,.07);color:#fff;text-align:left;font-weight:700;font-size:12px}.new-chat:hover{background:rgba(255,255,255,.14)}.new-chat b{font-size:18px;margin-right:8px;vertical-align:-1px}.label{position:relative;z-index:1;margin:30px 10px 9px;color:#8d9baa;font-size:10px;letter-spacing:.13em;font-weight:800}.history{position:relative;z-index:1;display:grid;gap:5px}.history button{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width:100%;padding:10px;border:0;border-radius:8px;background:transparent;color:#bfccd8;text-align:left;font-size:12px}.history button:hover,.history button.active{background:rgba(255,255,255,.09);color:#fff}.side-bottom{position:absolute;z-index:1;left:27px;bottom:26px;color:#aab6c3;font-size:11px;line-height:1.8}.dot{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(24,166,109,.15)}
+      main{min-width:0;display:flex;flex-direction:column;height:100vh;max-width:1120px;width:100%;margin:0 auto}.top{display:flex;align-items:center;justify-content:space-between;padding:24px 34px 17px;border-bottom:1px solid var(--line)}.top h1{margin:0;font-size:16px;letter-spacing:-.02em}.mode{display:flex;align-items:center;padding:8px 11px;border:1px solid var(--line);border-radius:99px;background:#fff;color:#566476;font-size:11px}.mode .dot{width:6px;height:6px;margin-right:6px}.conversation{flex:1;overflow:auto;padding:42px 34px 25px}.welcome{max-width:715px;margin:20px auto 34px}.eyebrow{color:var(--red);font-size:11px;letter-spacing:.16em;font-weight:800}.welcome h2{max-width:630px;margin:13px 0 10px;font-size:clamp(30px,4vw,48px);line-height:1.08;letter-spacing:-.055em}.welcome p{max-width:585px;margin:0;color:#657486;line-height:1.8;font-size:14px}.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:715px;margin:24px auto}.quick{display:flex;gap:10px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:left;color:var(--ink);transition:.2s}.quick:hover{border-color:#dba4a7;transform:translateY(-1px);box-shadow:0 9px 18px rgba(9,27,53,.06)}.quick i{display:grid;place-items:center;flex:0 0 31px;width:31px;height:31px;border-radius:9px;background:#fce9e9;color:var(--red);font-style:normal}.quick b{display:block;font-size:12px}.quick span{display:block;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.5}
+      .messages{max-width:760px;margin:0 auto;display:grid;gap:20px}.message{display:flex;gap:11px;align-items:flex-start}.avatar{flex:0 0 31px;width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:var(--red);color:#fff;font-weight:900;font-size:13px;box-shadow:2px 2px 0 #f0c35b}.bubble{max-width:calc(100% - 45px);padding:14px 16px;border-radius:4px 14px 14px 14px;background:#fff;border:1px solid var(--line);font-size:13px;line-height:1.75;box-shadow:0 6px 16px rgba(9,27,53,.035)}.message.user{justify-content:flex-end}.message.user .bubble{border:0;border-radius:14px 4px 14px 14px;background:var(--ink);color:#fff}.message.user .avatar{order:2;background:#e8edf1;color:var(--ink);box-shadow:none}.typing{display:inline-flex;gap:4px;align-items:center;height:18px}.typing i{width:5px;height:5px;border-radius:50%;background:#9aa8b6;animation:bounce 1s infinite}.typing i:nth-child(2){animation-delay:.16s}.typing i:nth-child(3){animation-delay:.32s}@keyframes bounce{50%{transform:translateY(-4px)}}.composer-wrap{padding:13px 34px 26px;background:linear-gradient(transparent,var(--soft) 25%)}.composer{position:relative;max-width:760px;margin:0 auto;padding:7px 7px 7px 15px;display:flex;align-items:flex-end;gap:10px;border:1px solid #cfd7de;border-radius:15px;background:#fff;box-shadow:0 10px 30px rgba(9,27,53,.07)}textarea{flex:1;max-height:130px;min-height:40px;padding:9px 0;border:0;outline:0;resize:none;color:var(--ink);background:transparent;font:13px/1.55 inherit}textarea::placeholder{color:#9da8b5}.send{width:39px;height:39px;border:0;border-radius:10px;background:var(--red);color:#fff;font-size:17px;font-weight:700}.send:hover{background:var(--red-deep)}.disclaimer{max-width:760px;margin:9px auto 0;color:#8c99a7;text-align:center;font-size:10px}
+      @media(max-width:720px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:17px}.brand{margin:0 4px 14px}.history,.label,.side-bottom{display:none}.new-chat{position:absolute;right:17px;top:18px;width:auto;padding:8px 11px}.new-chat b{display:none}main{height:calc(100vh - 77px)}.top{padding:16px 18px}.conversation{padding:24px 18px}.welcome{margin-top:8px}.quick-grid{grid-template-columns:1fr}.composer-wrap{padding:10px 18px 18px}.welcome h2{font-size:32px}.mode{font-size:10px}}
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><div class="mark">S</div><div><strong>SOCCER ASSISTANT</strong><span>YOUR FOOTBALL RESEARCH PARTNER</span></div></div>
+        <button class="new-chat" id="newChat"><b>＋</b>新对话</button>
+        <div class="label">最近对话</div>
+        <div class="history" id="history"></div>
+        <div class="side-bottom"><span class="dot"></span>SOCCER INTELLIGENCE<br/>RED &amp; WHITE EDITION</div>
+      </aside>
+      <main>
+        <header class="top"><h1 id="chatTitle">新对话</h1><div class="mode"><span class="dot"></span>足球研究助手</div></header>
+        <section class="conversation" id="conversation">
+          <div class="welcome" id="welcome"><div class="eyebrow">WELCOME TO THE MATCHDAY</div><h2>今天想聊点什么足球？</h2><p>赛程、球队、球员、伤停、比赛复盘，或者一个值得慢慢研究的战术问题。</p></div>
+          <div class="quick-grid" id="quickGrid">
+            <button class="quick" data-question="阿森纳下一场比赛是什么时候？"><i>◷</i><div><b>查询下一场比赛</b><span>赛程、对手与比赛时间</span></div></button>
+            <button class="quick" data-question="阿森纳目前的球队阵容有哪些球员？"><i>♙</i><div><b>查看球队阵容</b><span>位置、号码与球员资料</span></div></button>
+            <button class="quick" data-question="总结阿森纳近期的伤停与球队新闻。"><i>⌁</i><div><b>了解近期动态</b><span>伤停、转会与球队新闻</span></div></button>
+            <button class="quick" data-question="阿森纳如何通过前场压迫限制对方中场推进？"><i>◇</i><div><b>研究战术问题</b><span>从证据出发分析比赛打法</span></div></button>
+            <button class="quick" id="tacticalLibrary"><i>▤</i><div><b>战术学习资料库</b><span>查看系统优先检索的权威来源</span></div></button>
+          </div>
+          <div class="messages" id="messages"></div>
+        </section>
+        <footer class="composer-wrap"><div class="composer"><input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp,text/plain,text/markdown,application/pdf" hidden><button class="send" id="upload" aria-label="上传材料" style="background:#e8edf1;color:#091b35">＋</button><textarea id="input" rows="1" placeholder="问问赛程、球队、球员或战术问题…"></textarea><button class="send" id="send" aria-label="发送消息">↑</button></div><div class="disclaimer" id="attachmentHint">可上传战术板、比赛截图、TXT、Markdown 或 PDF；单个文件不超过 8 MB。</div></footer>
+      </main>
+    </div>
+    <script>
+      const input=document.getElementById('input'),messages=document.getElementById('messages'),welcome=document.getElementById('welcome'),quickGrid=document.getElementById('quickGrid'),conversation=document.getElementById('conversation'),historyEl=document.getElementById('history'),chatTitle=document.getElementById('chatTitle'),fileInput=document.getElementById('fileInput'),attachmentHint=document.getElementById('attachmentHint');
+      const escapeHtml=(text)=>text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+      const storageKey='soccerAssistantChats'; let chats=JSON.parse(localStorage.getItem(storageKey)||'[]'); let activeId=null; let attachment=null;
+      const save=()=>localStorage.setItem(storageKey,JSON.stringify(chats)); const active=()=>chats.find(chat=>chat.id===activeId);
+      function renderHistory(){historyEl.innerHTML='';chats.forEach(chat=>{const button=document.createElement('button');button.textContent=chat.title;button.className=chat.id===activeId?'active':'';button.onclick=()=>{activeId=chat.id;renderChat();renderHistory()};historyEl.appendChild(button)})}
+      function renderChat(){const chat=active();messages.innerHTML='';if(!chat){chatTitle.textContent='新对话';welcome.style.display='';quickGrid.style.display='';return}chatTitle.textContent=chat.title;welcome.style.display='none';quickGrid.style.display='none';chat.messages.forEach(item=>appendMessage(item.text,item.role));conversation.scrollTop=conversation.scrollHeight}
+      function createChat(){const chat={id:crypto.randomUUID(),sessionId:crypto.randomUUID(),title:'新对话',messages:[],pendingRunId:null,humanRunId:null,completedRunIds:[]};chats.unshift(chat);activeId=chat.id;save();renderHistory();renderChat();input.focus()}
+      function appendMessage(text,type='assistant',typing=false){const message=document.createElement('div');message.className='message '+type;const avatar=type==='assistant'?'<div class="avatar">S</div>':'<div class="avatar">你</div>';message.innerHTML=avatar+'<div class="bubble">'+(typing?'<span class="typing"><i></i><i></i><i></i></span>':escapeHtml(text).replaceAll('\n','<br>'))+'</div>';messages.appendChild(message);conversation.scrollTop=conversation.scrollHeight;return message}
+      async function readPayload(response){const raw=await response.text();try{return JSON.parse(raw)}catch{return {detail:raw.slice(0,180)||'服务返回了无法识别的错误'}}}
+      // 作用：把服务端 SSE 响应逐帧解析为 JavaScript 对象。
+      // 参数：response 是 fetch 返回的流式 HTTP 响应；onEvent 接收每一条已解析事件。
+      // 逻辑：按 SSE 的空行边界切分数据帧，读取 event/data 两行，再把 JSON data 交给界面。
+      async function consumeSseResponse(response,onEvent){
+        const reader=response.body?.getReader();
+        if(!reader)throw new Error('浏览器不支持流式响应。');
+        const decoder=new TextDecoder();let buffer='';
+        while(true){const {value,done}=await reader.read();buffer+=decoder.decode(value||new Uint8Array(),{stream:!done});
+          const frames=buffer.split('\n\n');buffer=frames.pop()||'';
+          for(const frame of frames){let eventName='message',jsonText='';
+            frame.split('\n').forEach(line=>{if(line.startsWith('event:'))eventName=line.slice(6).trim();if(line.startsWith('data:'))jsonText+=line.slice(5).trim()});
+            if(jsonText)onEvent(eventName,JSON.parse(jsonText));
+          }
+          if(done)break;
+        }
+      }
+
+      // 作用：显示真实 SSE 阶段消息，同时保留加载动画。
+      // 参数：bubble 是当前助手消息气泡；message 是服务端允许展示的简短进度文字。
+      // 逻辑：只使用 textContent 写入动态文本，避免把外部文本当 HTML 执行。
+      function showResearchProgress(bubble,message){bubble.innerHTML='<span class="typing"><i></i><i></i><i></i></span><span class="research-progress" style="margin-left:9px;color:#657486"></span>';bubble.querySelector('.research-progress').textContent=message;conversation.scrollTop=conversation.scrollHeight}
+
+      // 作用：在刷新页面或 SSE 意外断开后，从 PostgreSQL 恢复一项未完成研究的结果。
+      // 参数：chat 是 localStorage 中的一条对话，包含后端返回的 pendingRunId。
+      // 逻辑：查询 run 状态；success 时补回答案，failed 时补回失败说明，running 时两秒后再次查询。
+      async function recoverPendingResearch(chat){
+        if(!chat.pendingRunId)return;
+        try{const response=await fetch('/v1/research-runs/'+encodeURIComponent(chat.pendingRunId));const payload=await readPayload(response);if(!response.ok)throw new Error(payload.detail||'无法恢复任务');
+          if(payload.status==='running'){setTimeout(()=>recoverPendingResearch(chat),2000);return}
+          chat.completedRunIds=chat.completedRunIds||[];
+          if(!chat.completedRunIds.includes(chat.pendingRunId)){
+            const text=payload.status==='success'?(payload.answer||'研究完成，但未返回正文。'):'研究任务失败：'+(payload.error_message||'请稍后重新提交。');
+            chat.messages.push({role:'assistant',text});chat.completedRunIds.push(chat.pendingRunId);
+          }
+          chat.pendingRunId=null;save();if(chat.id===activeId)renderChat();
+        }catch(error){setTimeout(()=>recoverPendingResearch(chat),3000)}
+      }
+
+      // 作用：提交问题并消费服务端发回的研究进度与最终答案。
+      // 参数：question 是用户输入的足球问题。
+      // 逻辑：先把用户消息写入本地会话，再 POST 到 SSE 接口；progress 更新等待文案，final 保存答案，error 显示失败原因。
+      async function ask(question){
+        if(!question.trim())return;if(!activeId)createChat();const chat=active();welcome.style.display='none';quickGrid.style.display='none';
+        chat.messages.push({role:'user',text:question});if(chat.title==='新对话'){chat.title=question.slice(0,18);chatTitle.textContent=chat.title;renderHistory()}save();appendMessage(question,'user');input.value='';input.style.height='auto';
+        const pending=appendMessage('','assistant',true);const bubble=pending.querySelector('.bubble');showResearchProgress(bubble,'正在连接研究服务…');
+        if(chat.humanRunId){try{const response=await fetch('/v1/research-runs/'+encodeURIComponent(chat.humanRunId)+'/resume',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clarification:question})});const payload=await readPayload(response);if(!response.ok)throw new Error(payload.detail||'恢复研究失败');bubble.innerHTML=escapeHtml(payload.answer||'未返回结果。').replaceAll('\n','<br>');if(payload.status==='needs_input'){chat.messages.push({role:'assistant',text:payload.answer});save();return}chat.humanRunId=null;chat.messages.push({role:'assistant',text:payload.answer});save();return}catch(error){bubble.textContent='恢复研究失败：'+error.message;return}}
+        const controller=new AbortController();const timeoutTimer=setTimeout(()=>controller.abort(),90000);let finalAnswer='';
+        try{
+          const response=await fetch('/v1/research/stream',{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream'},body:JSON.stringify({question,session_id:chat.sessionId,attachment_context:attachment?.context||null}),signal:controller.signal});
+          if(!response.ok){const payload=await readPayload(response);throw new Error(payload.detail||'请求失败')}
+          await consumeSseResponse(response,(eventName,event)=>{const data=event.data||{};
+            if(eventName==='run_started'){chat.pendingRunId=event.run_id;save();showResearchProgress(bubble,data.message||'正在研究…')}
+            if(eventName==='progress')showResearchProgress(bubble,data.message||'正在研究…');
+            if(eventName==='final'){finalAnswer=data.answer||'服务未返回回答。';chat.completedRunIds=chat.completedRunIds||[];chat.completedRunIds.push(event.run_id);chat.pendingRunId=null;bubble.innerHTML=escapeHtml(finalAnswer).replaceAll('\n','<br>')}
+            if(eventName==='needs_human'){finalAnswer=data.answer||'请补充研究所需的信息。';chat.humanRunId=event.run_id;chat.pendingRunId=null;bubble.innerHTML=escapeHtml(finalAnswer).replaceAll('\n','<br>')}
+            if(eventName==='error')throw new Error(data.message||'研究请求失败。');
+          });
+          if(!finalAnswer)throw new Error('研究流在返回答案前结束。');
+          chat.messages.push({role:'assistant',text:finalAnswer});attachment=null;attachmentHint.textContent='可上传战术板、比赛截图、TXT、Markdown 或 PDF；单个文件不超过 8 MB。';save();
+        }catch(error){bubble.textContent=error.name==='AbortError'?'本次研究超过 90 秒仍未完成，请稍后重试或换一个更具体的问题。':'暂时无法完成这次查询：'+error.message;conversation.scrollTop=conversation.scrollHeight}finally{clearTimeout(timeoutTimer)}
+      }
+      async function uploadFile(file){if(!file)return;attachmentHint.textContent='正在解析 '+file.name+'…';const data=new FormData();data.append('file',file);try{const response=await fetch('/v1/uploads/analyze',{method:'POST',body:data});const payload=await readPayload(response);if(!response.ok)throw new Error(payload.detail||'上传失败');attachment={context:payload.attachment_context||'',name:file.name};attachmentHint.textContent='已附加：'+file.name+'。下一次提问会结合该材料分析。'}catch(error){attachment=null;attachmentHint.textContent='上传失败：'+error.message}}
+      async function showLibrary(){if(!activeId)createChat();try{const response=await fetch('/v1/tactical-library');const payload=await readPayload(response);if(!response.ok)throw new Error(payload.detail||'无法读取资料库');const text='当前优先检索的战术资料源：\n'+payload.sources.map(source=>'• '+source.publisher+'｜'+source.title+'\n  '+source.url+'\n  适用：'+source.use).join('\n');active().messages.push({role:'assistant',text});save();renderChat()}catch(error){appendMessage('暂时无法读取资料库：'+error.message)}}
+      document.getElementById('send').addEventListener('click',()=>ask(input.value));document.getElementById('upload').addEventListener('click',()=>fileInput.click());fileInput.addEventListener('change',()=>uploadFile(fileInput.files[0]));input.addEventListener('keydown',(event)=>{if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ask(input.value)}});input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,130)+'px'});document.querySelectorAll('.quick[data-question]').forEach((button)=>button.addEventListener('click',()=>ask(button.dataset.question)));document.getElementById('tacticalLibrary').addEventListener('click',showLibrary);document.getElementById('newChat').addEventListener('click',createChat);if(chats.length){activeId=chats[0].id;renderChat()}else createChat();renderHistory();chats.forEach(recoverPendingResearch);
+    </script>
+  </body>
+</html>
