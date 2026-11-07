@@ -5,7 +5,8 @@ services:
     name: soccer-agent-web
     runtime: python
     region: singapore
-    plan: starter
+    # 面试演示版使用 Render 免费 Web 服务；闲置后会自动休眠。
+    plan: free
     buildCommand: pip install --no-cache-dir -r agent_base/requirements.txt
     preDeployCommand: alembic upgrade head
     startCommand: uvicorn service.app:app --host 0.0.0.0 --port $PORT
@@ -51,40 +52,11 @@ services:
       - key: SOCCER_AGENT_BOOTSTRAP_ADMIN_EMAIL
         sync: false
 
-  - type: worker
-    name: soccer-agent-worker
-    runtime: python
-    region: singapore
-    plan: starter
-    buildCommand: pip install --no-cache-dir -r agent_base/requirements.txt
-    startCommand: celery -A worker.celery_app:celery_app worker --loglevel=INFO --pool=solo
-    envVars:
-      - key: PYTHONPATH
-        value: /opt/render/project/src
-      - key: DATABASE_URL
-        fromDatabase:
-          name: soccer-agent-db
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: keyvalue
-          name: soccer-agent-cache
-          property: connectionString
-      - key: CELERY_BROKER_URL
-        fromService:
-          type: keyvalue
-          name: soccer-agent-cache
-          property: connectionString
-      - key: CELERY_RESULT_BACKEND
-        fromService:
-          type: keyvalue
-          name: soccer-agent-cache
-          property: connectionString
-
   - type: keyvalue
     name: soccer-agent-cache
     region: singapore
-    plan: starter
+    # 免费 Redis 只用于演示缓存与限流；重启后缓存可丢失。
+    plan: free
     maxmemoryPolicy: noeviction
     # 不给公网 IP 开白名单；Web 与 Worker 通过 Render 内网连接。
     ipAllowList: []
@@ -92,6 +64,7 @@ services:
 databases:
   - name: soccer-agent-db
     region: singapore
-    plan: starter
+    # 免费 Postgres 只用于演示数据；Render 会在 30 天后要求升级。
+    plan: free
     databaseName: soccer_agent
     user: soccer_agent
