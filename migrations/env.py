@@ -23,12 +23,22 @@ target_metadata = Base.metadata
 
 
 def database_url() -> str:
-    """从环境变量读取迁移目标，避免把真实连接串提交进 alembic.ini。"""
+    """从环境变量读取 Alembic 可用的迁移地址，避免提交真实密钥。
+
+    返回值：显式指定 psycopg 驱动的 SQLAlchemy 连接串。
+    实现逻辑：Render 注入的标准 ``postgresql://`` 地址没有携带驱动名，
+    Alembic 会错误尝试未安装的 psycopg2；此处统一转为项目实际安装的
+    ``postgresql+psycopg://``，与应用数据库层保持一致。
+    """
     import os
 
     value = os.getenv("DATABASE_URL", "").strip()
     if not value:
         raise RuntimeError("运行 Alembic 前必须先配置 DATABASE_URL。")
+    if value.startswith("postgres://"):
+        return "postgresql+psycopg://" + value.removeprefix("postgres://")
+    if value.startswith("postgresql://"):
+        return "postgresql+psycopg://" + value.removeprefix("postgresql://")
     return value
 
 
