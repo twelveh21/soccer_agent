@@ -86,6 +86,8 @@ services:
     region: singapore
     plan: starter
     maxmemoryPolicy: noeviction
+    # 不给公网 IP 开白名单；Web 与 Worker 通过 Render 内网连接。
+    ipAllowList: []
 
 databases:
   - name: soccer-agent-db
